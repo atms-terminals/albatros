@@ -97,3 +97,4 @@ $filename = ROOT.'/download/contragents.xlsx';
 $rowData = readXls($filename);
 $k = loadContragents($rowData);
 echo "Загрузка Контрагентов. Загружено $k строк<br>";
+?>

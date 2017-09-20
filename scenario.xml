@@ -5,8 +5,8 @@
         <desc>Терминал. Основной экран терминала</desc>
         <screen>1</screen>
         <check>
-            <hw>1</hw>
-            <proffit>1</proffit>
+            <hw>0</hw>
+            <proffit>0</proffit>
         </check>
         <timer>
             <screen>1</screen>
@@ -149,5 +149,25 @@
             <action>move</action>
         </timer>
     </s15>
+
+    <s16>
+        <desc>Терминал. Выбор новой услуги СибГУФК</desc>
+        <screen>16</screen>
+        <timer>
+            <screen>1</screen>
+            <timeout>60</timeout>
+            <action>move</action>
+        </timer>
+    </s16>
+
+    <s17>
+        <desc>Ввод контрагента</desc>
+        <screen>17</screen>
+        <timer>
+            <screen>1</screen>
+            <timeout>60</timeout>
+            <action>move</action>
+        </timer>
+    </s17>
 
 </states>
