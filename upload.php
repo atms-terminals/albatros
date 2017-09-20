@@ -1,5 +1,8 @@
 <?php
-    define('ROOT', __DIR__);
+ini_set("display_errors", "1");
+ini_set("error_reporting", E_ALL | E_STRICT | E_NOTICE);
+
+define('ROOT', __DIR__);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,9 +15,9 @@
 </head>
 <body>
     <div class="container-fluid">
-        <h1>Загрузка файла со списком услуг</h1>
+        <h1>Выгрузка файлов со списком контрагентов и платежей</h1>
         <?php
-            include 'views/uploadPriceXls.php';
+            include 'views/exportReestrXls.php';
         ?>
 
     </div>

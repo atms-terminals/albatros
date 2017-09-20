@@ -14,6 +14,7 @@ additional/**
 # релиз файлы
 release/**
 tmp/**
+download/**
 
 # sass файлы
 .sass-cache/**
