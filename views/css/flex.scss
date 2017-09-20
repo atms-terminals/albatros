@@ -1,8 +1,9 @@
 @import '_consts.scss';
 
-.my-flex-container {
+.flex-container {
     display: flex;
     flex-direction: row;
+    padding: 0 60px;
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
@@ -20,20 +21,20 @@
 }
 
 .rus-block {
-    flex-basis: 7%;
+    flex-basis: 7.5%;
     text-align: center;
-    height: 75px;
+    height: 90px;
 }
 
 .rus-num-block {
-    flex-basis: 7%;
+    flex-basis: 7.5%;
     text-align: center;
-    height: 75px;
+    height: 90px;
 }
 
 .rus-btn {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
 }
 
 .rus-num-btn {
@@ -75,8 +76,8 @@
 #target {
     font-family: monospace;
     text-transform: uppercase;
-    width: 100%;
     font-size: 40px;
     text-align: center;
-    margin: 10px 0;
+    margin: 100px;
+    width: 80%;
 }

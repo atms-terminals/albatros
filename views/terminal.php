@@ -14,6 +14,7 @@
     <!-- env:dev -->
         <link href='../bower_components/bootstrap/dist/css/bootstrap.css' rel="stylesheet">
         <link href='views/css/style-sass.css?<?= filemtime(ROOT.'/views/css/style-sass.css')?>' rel="stylesheet">
+        <link href='views/css/flex-sass.css?<?= filemtime(ROOT.'/views/css/flex-sass.css')?>' rel="stylesheet">
     <!-- env:dev:end -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -64,6 +65,7 @@
         <script src='views/js/terminal.js?<?= filemtime("views/js/terminal.js")?>'></script>
         <script src='views/js/cashcode.js?<?= filemtime("views/js/cashcode.js")?>'></script>
         <script src='views/js/rfid.js?<?= filemtime("views/js/rfid.js")?>'></script>
+        <script src='views/kbd/kbd.js?<?= filemtime("views/kbd/kbd.js")?>'></script>
     <!-- env:dev:end -->
 </body>
 </html>

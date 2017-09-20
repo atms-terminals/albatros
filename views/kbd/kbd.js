@@ -57,5 +57,9 @@ $(document).ready(function() {
         } else {
             $customerInput.val(getMaskedString(customerText, mask, char));
         }
+
+        if ($(this).hasClass('ok')) {
+            $(this).closest('.keyboard').siblings('.action').trigger('click');
+        }
     });
 });
