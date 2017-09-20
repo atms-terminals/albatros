@@ -16,6 +16,7 @@ function printButtonAN($key)
     } elseif ($key == 'ok') {
         return "<div class='rus-num-block'>
                 <button class='btn btn-primary medium-font-size kbd rus-num-btn ok wide wide-btn'>OK</button>
+                <input type='hidden' class='target' value='target'>
             </div>";
     } elseif ($key == 'space') {
         return "<div class='rus-num-block'>
