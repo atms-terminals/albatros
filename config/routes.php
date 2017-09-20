@@ -3,12 +3,17 @@ return array(
     '.*?/(terminal.php)' => 'terminal/index',
     '.*?/(admin.php)' => 'admin/index',
     '.*?/ajax/move' => 'ajax/move',
-    '.*?/ajax/getBalance' => 'ajax/getBalance',
-    '.*?/ajax/getMoneyScreen' => 'ajax/getMoneyScreen',
-    '.*?/ajax/pay' => 'ajax/pay',
     '.*?/ajax/writeLog' => 'ajax/writeLog',
     '.*?/ajax/collection' => 'ajax/collection',
-    '.*?/ajax/getServiceList' => 'ajax/getServiceList',
+
+    '.*?/ajax/getServiceListSibgufk' => 'sibgufk/getServiceList',
+    '.*?/ajax/getContragentsSibgufk' => 'sibgufk/getContragents',
+
+    '.*?/ajax/getBalance' => 'albatros/getBalance',
+    '.*?/ajax/getMoneyScreen' => 'albatros/getMoneyScreen',
+    '.*?/ajax/pay' => 'albatros/pay',
+    '.*?/ajax/getServiceList' => 'albatros/getServiceList',
+    
 
     '.*?/admin/getHwsState' => 'admin/getHwsState',
     '.*?/admin/getCollections' => 'admin/getCollections',
