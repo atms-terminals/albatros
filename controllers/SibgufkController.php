@@ -7,17 +7,137 @@ use components\DbHelper as dbHelper;
 use components\User as user;
 use controllers\AjaxController as ajaxController;
 
-define('CONTRAGENT_SIBGUFK', 17);
+define('CONTRAGENTS_SIBGUFK', 17);
 define('SERVICE_LIST_SCREEN_SIBGUFK', 16);
-
+define('INPUT_FIO_SIBGUFK', 19);
+define('SAVE_PASSPORT_SIBGUFK', 20);
+define('GET_MONEY_SCREEN_SIBGUFK', 21);
 /**
  * обработка запросов ajax.
  */
+
 class SibgufkController extends ajaxController\AjaxController
 {
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * Обработка команды получения новых услуг (Альбатрос)
+     * Обработка команды оплаты
+     */
+    public function actionPay()
+    {
+        $idContragent = empty($_POST['values']['idContragent']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['idContragent']);
+        $amount = (empty($_POST['values']['amount'])) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['values']['amount']);
+        $nextScreen = empty($_POST['nextScreen']) ? user\User::getFirstScreen() : dbHelper\DbHelper::mysqlStr($_POST['nextScreen']);
+        $uid = user\User::getId();
+
+        $query = "/*".__FILE__.':'.__LINE__."*/ ".
+            "CALL payments_add_sibgufk($uid, '$idContragent', '$amount')";
+        $row = dbHelper\DbHelper::call($query);
+
+        $replArray = $this->makeReplaceArray($nextScreen);
+        $this->putPostIntoReplaceArray($replArray);
+        $response = $this->getScreen($nextScreen, $replArray);
+        $response['message'] = '';
+        $response['code'] = 0;
+
+        //отправляем результат
+        echo json_encode($response);
+        return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Обработка команды сохранения контрагента
+     */
+    public function actionSaveContragent()
+    {
+        $contragent = empty($_POST['values']['contragent']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['contragent']);
+        $idContragent = empty($_POST['values']['idContragent']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['idContragent']);
+        $passport = empty($_POST['values']['passport']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['passport']);
+
+        $query = "/*".__FILE__.':'.__LINE__."*/ ".
+            "SELECT custom_contragents_add_term(1, 'subgufk', '$idContragent', '$contragent', '$passport') res";
+        $row = dbHelper\DbHelper::selectRow($query);
+
+        $_POST['values']['idContragent'] = $row['res'];
+        
+        $nextScreen = $row['res'] == 0 ? FIRST_SCREEN : GET_MONEY_SCREEN_SIBGUFK;
+
+        $replArray = $this->makeReplaceArray($nextScreen);
+        $this->putPostIntoReplaceArray($replArray);
+        $response = $this->getScreen($nextScreen, $replArray);
+        $response['message'] = '';
+        $response['code'] = 0;
+
+        //отправляем результат
+        echo json_encode($response);
+        return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Обработка команды получения списка контрагентов
+     */
+    public function actiongetContragents()
+    {
+        $nextScreen = empty($_POST['nextScreen']) ? user\User::getFirstScreen() : dbHelper\DbHelper::mysqlStr($_POST['nextScreen']);
+
+        $contragentSrc = empty($_POST['values']['contragent']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['contragent']);
+        $contragentsParts = explode(' ', $contragentSrc);
+        $contragent = implode('%', $contragentsParts);
+        
+        $replArray = $this->makeReplaceArray($nextScreen);
+
+        $contList = '';
+
+        if (strlen($contragentSrc) > 5) {
+            // добавляем список контрагентов
+            $query = "/*".__FILE__.':'.__LINE__."*/ ".
+                "SELECT c.id, c.fio, c.passport
+                from custom_contragents_sgufk c
+                where upper(c.fio) like upper('$contragent%')
+                order by c.fio";
+            $rows = dbHelper\DbHelper::selectSet($query);
+
+            if ($rows) {
+                foreach ($rows as $onePiece) {
+                    $next = $onePiece['passport'] ? GET_MONEY_SCREEN_SIBGUFK : SAVE_PASSPORT_SIBGUFK;
+                    $contList .= "<tr>
+                            <td>{$onePiece['fio']}</td>
+                            <td class='text-center'>{$onePiece['passport']}</td>
+                            <td class='text-center'>
+                                <input class='nextScreen' type='hidden' value='$next' />
+                                <input class='activity' type='hidden' value='move' />
+                                <input class='value idContragent' type='hidden' value='{$onePiece['id']}' />
+                                <input class='value contragent' type='hidden' value='{$onePiece['fio']}' />
+                                <input class='value passport' type='hidden' value='{$onePiece['passport']}' />
+                                <a class='btn btn-primary action small'>Выбрать</a>
+                            </td>
+                        </tr>";
+                }
+            } else {
+                $nextScreen = INPUT_FIO_SIBGUFK;
+            }
+        } else {
+            $nextScreen = INPUT_FIO_SIBGUFK;
+        }
+
+        // добавляем список сервисов
+        $replArray['patterns'][] = '{CONTRAGENTS_LIST}';
+        $replArray['values'][] = $contList;
+
+        $response = $this->getScreen($nextScreen, $replArray);
+
+        $response['message'] = '';
+        $response['code'] = 0;
+        
+        //отправляем результат
+        echo json_encode($response);
+        return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Обработка команды получения списка услуг
      */
     public function actionGetServiceList()
     {
@@ -81,7 +201,7 @@ class SibgufkController extends ajaxController\AjaxController
                         <input class='nextScreen' type='hidden' value='".FIRST_SCREEN."' />
                         <button class='btn btn-{$rows[$i]['color']} action service'>{$rows[$i]['desc']}$cost</button-->   
 
-                        <input class='nextScreen' type='hidden' value='".CONTRAGENT_SIBGUFK."' />
+                        <input class='nextScreen' type='hidden' value='".CONTRAGENTS_SIBGUFK."' />
                         <input class='value id' type='hidden' value='{$rows[$i]['id']}' />
                         <input class='activity' type='hidden' value='move' />
                         <button class='btn btn-{$rows[$i]['color']} action service'>{$rows[$i]['desc']}$cost</button>   

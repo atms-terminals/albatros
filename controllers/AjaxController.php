@@ -29,6 +29,9 @@ class AjaxController
         $nextScreen = (empty($_POST['nextScreen'])) ? user\User::getFirstScreen() : dbHelper\DbHelper::mysqlStr($_POST['nextScreen']);
 
         $replArray = $this->makeReplaceArray($nextScreen);
+
+        $this->putPostIntoReplaceArray($replArray);
+
         $response = $this->getScreen($nextScreen, $replArray);
 
         $response['message'] = $message;
@@ -228,6 +231,21 @@ class AjaxController
         return $response;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * кладем в массивы для замены в шаблонах массив POST.
+     *
+     * @return array массивы для замены
+     */
+    protected function putPostIntoReplaceArray(&$replArray)
+    {
+        if (!empty($_POST['values'])) {
+            foreach ($_POST['values'] as $key => $value) {
+                $replArray['patterns'][] = '{'.strtoupper($key).'}';
+                $replArray['values'][] = $value;
+            }
+        }
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * формируем массивы для замены в шаблонах.

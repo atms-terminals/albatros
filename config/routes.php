@@ -8,6 +8,8 @@ return array(
 
     '.*?/ajax/getServiceListSibgufk' => 'sibgufk/getServiceList',
     '.*?/ajax/getContragentsSibgufk' => 'sibgufk/getContragents',
+    '.*?/ajax/saveContragentSibgufk' => 'sibgufk/saveContragent',
+    '.*?/ajax/paySibgufk' => 'sibgufk/pay',
 
     '.*?/ajax/getBalance' => 'albatros/getBalance',
     '.*?/ajax/getMoneyScreen' => 'albatros/getMoneyScreen',

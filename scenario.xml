@@ -170,4 +170,62 @@
         </timer>
     </s17>
 
+    <s18>
+        <desc>Выбор контрагента</desc>
+        <screen>18</screen>
+        <timer>
+            <screen>1</screen>
+            <timeout>60</timeout>
+            <action>move</action>
+        </timer>
+    </s18>
+
+    <s19>
+        <desc>Ввод ФИО</desc>
+        <screen>19</screen>
+        <timer>
+            <screen>1</screen>
+            <timeout>60</timeout>
+            <action>move</action>
+        </timer>
+    </s19>
+
+    <s20>
+        <desc>Ввод паспорта</desc>
+        <screen>20</screen>
+        <timer>
+            <screen>1</screen>
+            <timeout>60</timeout>
+            <action>move</action>
+        </timer>
+    </s20>
+
+    <s21>
+        <desc>Терминал. Прием денег</desc>
+        <check>
+            <hw>0</hw>
+        </check>
+        <screen>21</screen>
+        <cash>0</cash>
+        <timer>
+            <screen>5</screen>
+            <timeout>300</timeout>
+            <action>pay</action>
+        </timer>
+    </s21>
+
+    <s22>
+        <desc>Терминал. Платеж</desc>
+        <screen>22</screen>
+<!--         <print>
+            <top>6</top>
+            <elements>11</elements>
+            <bottom>10</bottom>
+        </print>
+ -->        <timer>
+            <screen>1</screen>
+            <timeout>5</timeout>
+            <action>move</action>
+        </timer>
+    </s22>
 </states>

@@ -13,6 +13,12 @@ body {
     padding: 0;
 }
 
+.sbheader {
+    font-size: 35px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
 .container-fluid .row{
     margin: 0;
 }
@@ -327,6 +333,17 @@ button.service.control {
     color: $firstFirmBack;
     font-size: 50px;
     height: 100px;
+    padding: 0;
+    margin: 0;
+}
+
+button.service.control.sibgufk {
+    width: 300px;
+    min-height: 0;
+    background-color: #c6c6dd;
+    color: #3c44b6;
+    font-size: 50px;
+    /* height: 100px; */
     padding: 0;
     margin: 0;
 }
