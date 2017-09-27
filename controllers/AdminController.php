@@ -74,7 +74,8 @@ class AdminController
     public function actionGetPriceGroup()
     {
         $active = empty($_GET['active']) ? 0 : dbHelper\DbHelper::mysqlStr($_GET['active']);
-        $list = admin\Admin::getPriceGroup($active);
+        $type = empty($_GET['type']) ? 0 : dbHelper\DbHelper::mysqlStr($_GET['type']);
+        $list = admin\Admin::getPriceGroup($type, $active);
 
         require_once(ROOT.'/views/priceGroup.php');
         return true;

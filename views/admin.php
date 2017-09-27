@@ -75,6 +75,12 @@
                     </p>
                     <button type='button' class='btn btn-primary loadPriceList'>Загрузить прейскурант</button><br><br>
                 </fieldset>
+                <div>
+                    <div class="btn-group day-type" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default active" value="albatros">Альбатрос</button>
+                        <button type="button" class="btn btn-default" value="sibgufk">СибГУФК</button>
+                    </div>
+                </div>
                 <input type="checkbox" id="priceStatus" checked> Только активные услуги
                 <div class="resultArea"></div>
             </div>
