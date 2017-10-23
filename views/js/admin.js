@@ -41,11 +41,12 @@ $(document).ready(function() {
         var sid = $('#sid').val(),
             $checkbox = $(this).siblings('.serviceItem'),
             req = {
+                type: $('.day-type .active').val(),
                 id: $checkbox.attr('id'), 
                 text: $(this).val()
             };
 
-        $.post(sid + '/admin/setClientsDesc', req, function() {
+        $.post(sid + '/admin/deletePriceItem', req, function() {
 
         }, 'json')
             .fail(function(){
@@ -106,10 +107,32 @@ $(document).ready(function() {
             $checkbox = $(this).siblings('.serviceItem'),
             req = {
                 id: $checkbox.attr('id'), 
+                type: $('.day-type .active').val(),
                 text: $(this).val()
             };
 
         $.post(sid + '/admin/setClientsDesc', req, function() {
+
+        }, 'json')
+            .fail(function(){
+                get('getPriceGroup', $('#priceGroup'), {
+                    type: $('.day-type .active').val(),
+                    active: $('#priceStatus').prop('checked') ? 1 : 0
+                    });
+            });
+    });
+
+    // редактирование цены
+    $(document).on('change', '.price', function() {
+        var sid = $('#sid').val(),
+            $checkbox = $(this).siblings('.serviceItem'),
+            req = {
+                id: $checkbox.attr('id'), 
+                type: $('.day-type .active').val(),
+                price: $(this).val()
+            };
+
+        $.post(sid + '/admin/setPrice', req, function() {
 
         }, 'json')
             .fail(function(){
@@ -128,6 +151,7 @@ $(document).ready(function() {
             $checkbox = $this.find('.serviceItem'),
             req = {
                 id: $checkbox.attr('id'), 
+                type: $('.day-type .active').val(),
                 color: color
             };
 
@@ -147,6 +171,7 @@ $(document).ready(function() {
         var sid = $('#sid').val(),
             req = {
                 id: $(this).attr('id'), 
+                type: $('.day-type .active').val(),
                 status: $(this).prop('checked') ? 1 : 0
             };
 
@@ -386,6 +411,7 @@ $(document).ready(function() {
             action = $('#confirmDeleteDialog .action').val(), 
             req = {
                 id: $('#confirmDeleteDialog .id').val(), 
+                type: $('.day-type .active').val(),
             };
 
         $.post(sid + '/admin/' + action, req, function() {

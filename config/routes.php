@@ -25,6 +25,7 @@ return array(
     '.*?/admin/setPriceGroupStatus' => 'admin/setPriceGroupStatus',
     '.*?/admin/setClientsDesc' => 'admin/setClientsDesc',
     '.*?/admin/setColor' => 'admin/setColor',
+    '.*?/admin/setPrice' => 'admin/setPrice',
     '.*?/admin/deletePriceItem' => 'admin/deletePriceItem',
     '.*?/admin/loadPriceList' => 'admin/loadPriceList',
 

@@ -77,7 +77,7 @@ class Admin
     {
         $sql = $status ? 'p.status = 1' : '1';
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "SELECT p.id, p.id_parent, p.`desc`, p.clients_desc, p.`status`, p.color
+            "SELECT p.id, p.id_parent, p.`desc`, p.clients_desc, p.`status`, p.color, p.price, p.`type`
             from v_custom_pricelist p
             where $sql
                 and p.type = '$type'

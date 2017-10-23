@@ -30,7 +30,8 @@ function getMenuLevel($menu, $id)
                 <span class='color btn btn-primary'><input type='radio' $checkedPrimary name='color$id$i' value='primary' ></span>
                 <input type='text' value='{$item['clients_desc']}' class='clientsDesc' size='50' placeholder='Название для терминала' title='Название для терминала' />";
             if (empty($menu[$item['id']])) {
-                // $html .= "<input type='text' value='{$item['price']}' class='price' size='8' placeholder='Цена услуги' title='Цена услуги' />";
+                $disabled = $item['type'] == 'sibgufk' ? '' : 'disabled';
+                $html .= "<input type='text' value='{$item['price']}' class='price' $disabled size='8' placeholder='Цена услуги' title='Цена услуги' />";
             } else {
                 $html .= "<ul class='hidden'>";
                 $html .= getMenuLevel($menu, $item['id']);

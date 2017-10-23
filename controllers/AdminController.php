@@ -88,9 +88,10 @@ class AdminController
         $uid = user\User::getId();
         $id = empty($_POST['id']) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['id']);
         $status = empty($_POST['status']) ? 0 : 1;
+        $type = empty($_POST['type']) ? 'albatros' : dbHelper\DbHelper::mysqlStr($_POST['type']);
 
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "SELECT custom_price_set_status($uid, 'albatros', '$id', $status)";
+            "SELECT custom_price_set_status($uid, '$type', '$id', $status)";
         $result = dbHelper\DbHelper::selectRow($query);
         $response['code'] = 0;
 
@@ -142,9 +143,10 @@ class AdminController
     {
         $uid = user\User::getId();
         $id = empty($_POST['id']) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['id']);
+        $type = empty($_POST['type']) ? 'albatros' : dbHelper\DbHelper::mysqlStr($_POST['type']);
 
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "SELECT custom_price_delete($uid, 'albatros', '$id')";
+            "SELECT custom_price_delete($uid, '$type', '$id')";
         $result = dbHelper\DbHelper::selectRow($query);
         $response['code'] = 0;
 
@@ -157,9 +159,10 @@ class AdminController
         $uid = user\User::getId();
         $id = empty($_POST['id']) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['id']);
         $text = empty($_POST['text']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['text']);
+        $type = empty($_POST['type']) ? 'albatros' : dbHelper\DbHelper::mysqlStr($_POST['type']);
 
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "SELECT custom_price_set_clients_desc($uid, 'albatros', '$id', '$text')";
+            "SELECT custom_price_set_clients_desc($uid, '$type', '$id', '$text')";
         $result = dbHelper\DbHelper::selectRow($query);
         $response['code'] = 0;
 
@@ -172,9 +175,26 @@ class AdminController
         $uid = user\User::getId();
         $id = empty($_POST['id']) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['id']);
         $color = empty($_POST['color']) ? 'primary' : dbHelper\DbHelper::mysqlStr($_POST['color']);
+        $type = empty($_POST['type']) ? 'albatros' : dbHelper\DbHelper::mysqlStr($_POST['type']);
 
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "SELECT custom_price_set_color($uid, 'albatros', '$id', '$color')";
+            "SELECT custom_price_set_color($uid, '$type', '$id', '$color')";
+        $result = dbHelper\DbHelper::selectRow($query);
+        $response['code'] = 0;
+
+        echo json_encode($response);
+        return true;
+    }
+
+    public function actionSetPrice()
+    {
+        $uid = user\User::getId();
+        $id = empty($_POST['id']) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['id']);
+        $price = empty($_POST['price']) ? '0' : dbHelper\DbHelper::mysqlStr($_POST['price']);
+        $type = empty($_POST['type']) ? 'albatros' : dbHelper\DbHelper::mysqlStr($_POST['type']);
+
+        $query = "/*".__FILE__.':'.__LINE__."*/ ".
+            "SELECT custom_price_set_price($uid, '$type', '$id', '$price')";
         $result = dbHelper\DbHelper::selectRow($query);
         $response['code'] = 0;
 
