@@ -36,32 +36,32 @@ function readXls($filename)
                                     FALSE);
 }
 
-function loadPrice($rowData)
-{
-    $k = 0;
-    $names = array('Родитель код' => 'idParent',
-                'Родитель наименование' => false,
-                'Услуга код' => 'id',
-                'Услуга наименование' => 'desc');
-    if ($rowData) {
-        // создаем таблицу соответствия названий в excel с нашими параметрами
-        foreach ($rowData[0] as $key => $value) {
-            if ($names[trim($value)]) {
-                $reference[$names[trim($value)]] = $key;
-            }
-        }
+// function loadPrice($rowData)
+// {
+//     $k = 0;
+//     $names = array('Родитель код' => 'idParent',
+//                 'Родитель наименование' => false,
+//                 'Услуга код' => 'id',
+//                 'Услуга наименование' => 'desc');
+//     if ($rowData) {
+//         // создаем таблицу соответствия названий в excel с нашими параметрами
+//         foreach ($rowData[0] as $key => $value) {
+//             if ($names[trim($value)]) {
+//                 $reference[$names[trim($value)]] = $key;
+//             }
+//         }
 
-        if (count($rowData) > 1)
-        for ($i = 1; $i < count($rowData); $i++) { 
-            $idParent = empty($rowData[$i][$reference['idParent']]) ? 0 : $rowData[$i][$reference['idParent']];
-            $query = "/*".__FILE__.':'.__LINE__."*/ ".
-                "SELECT custom_price_add(1, 'sgufk', '{$rowData[$i][$reference['id']]}', '$idParent', '{$rowData[$i][$reference['desc']]}', '', '', '', '', '', '');";
-            $result = dbHelper\DbHelper::selectRow($query);
-            $k++;
-        }
-    }
-    return $k;
-}
+//         if (count($rowData) > 1)
+//         for ($i = 1; $i < count($rowData); $i++) { 
+//             $idParent = empty($rowData[$i][$reference['idParent']]) ? 0 : $rowData[$i][$reference['idParent']];
+//             $query = "/*".__FILE__.':'.__LINE__."*/ ".
+//                 "SELECT custom_price_add(1, 'sgufk', '{$rowData[$i][$reference['id']]}', '$idParent', '{$rowData[$i][$reference['desc']]}', '', '', '', '', '', '');";
+//             $result = dbHelper\DbHelper::selectRow($query);
+//             $k++;
+//         }
+//     }
+//     return $k;
+// }
 
 function loadContragents($rowData)
 {
@@ -70,6 +70,7 @@ function loadContragents($rowData)
                 'ФИО' => 'fio',
                 'Пасорт (серия, номер)' => 'passport');
     if ($rowData) {
+        if ($rowData[0])
         // создаем таблицу соответствия названий в excel с нашими параметрами
         foreach ($rowData[0] as $key => $value) {
             if ($names[trim($value)]) {
@@ -77,24 +78,37 @@ function loadContragents($rowData)
             }
         }
 
-        if (count($rowData) > 1)
-        for ($i = 1; $i < count($rowData); $i++) { 
-            $query = "/*".__FILE__.':'.__LINE__."*/ ".
-                "SELECT custom_contragents_add(1, 'sgufk', '{$rowData[$i][$reference['id']]}', '{$rowData[$i][$reference['fio']]}', '{$rowData[$i][$reference['passport']]}')";
-            $result = dbHelper\DbHelper::selectRow($query);
-            $k++;
+        if (count($rowData) > 1) {
+            for ($i = 1; $i < count($rowData); $i++) { 
+                $query = "/*".__FILE__.':'.__LINE__."*/ ".
+                    "SELECT custom_contragents_add(1, 'sibgufk', '{$rowData[$i][$reference['id']]}', '{$rowData[$i][$reference['fio']]}', '{$rowData[$i][$reference['passport']]}')";
+                $result = dbHelper\DbHelper::selectRow($query);
+                $k++;
+            }
         }
     }
     return $k;
 }
 
-$filename = ROOT.'/download/uslugi.xlsx';
-$rowData = readXls($filename);
-$k = loadPrice($rowData);
-echo "Загрузка списка услуг. Загружено $k строк<br>";
 
-$filename = ROOT.'/download/contragents.xlsx';
+
+// $filename = ROOT.'/download/uslugi.xlsx';
+// $rowData = readXls($filename);
+// $k = loadPrice($rowData);
+// echo "Загрузка списка услуг. Загружено $k строк<br>";
+
+// $filename = ROOT.'/download/contragents.xlsx';
 $rowData = readXls($filename);
-$k = loadContragents($rowData);
-echo "Загрузка Контрагентов. Загружено $k строк<br>";
+$response['message'] = "Неверный формат";
+if ($rowData[0][0] == 'Код' && $rowData[0][1] == 'ФИО') {
+    if ($rowData) {
+        $query = "/*".__FILE__.':'.__LINE__."*/ ".
+            "DELETE from custom_contragents_sgufk where 1;";
+        $result = dbHelper\DbHelper::call($query);
+
+        $k = loadContragents($rowData);
+        $response['message'] = "Загрузка Контрагентов. Загружено $k строк";
+    }
+}
+
 ?>

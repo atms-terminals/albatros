@@ -40,6 +40,24 @@ class AdminController
         return true;
     }
 
+    public function actionUploadContragentsSibgufk()
+    {
+        if (!empty($_FILES)) {
+            if ($_FILES['uploaded']['error'] == 0) {
+                $filename = $_FILES['uploaded']['tmp_name'];
+                require_once(ROOT.'/views/uploadPriceXls.php');
+            } else {
+                $response['message'] = 'Ошибка загрузки файла';
+            }
+
+        } else {
+            $response['message'] = 'Нет файла';
+        }
+
+        echo json_encode($response);
+        return true;
+    }
+
     public function actionGetCollectionDetails()
     {
         $idCollection = empty($_POST['idCollection']) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['idCollection']);

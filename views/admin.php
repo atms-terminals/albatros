@@ -15,6 +15,7 @@
     <!-- env:dev -->
         <link href='../bower_components/bootstrap/dist/css/bootstrap.css' rel="stylesheet">
         <link href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+        <link href="../bower_components/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" >
         <link href='views/css/style-sass.css?<?= filemtime(ROOT.'/views/css/style-sass.css')?>' rel="stylesheet">
     <!-- env:dev:end -->
 
@@ -42,7 +43,7 @@
 
             <div role="tabpanel" id="collections" class="tab-pane fade">
                 <a class="btn btn-primary" id='refreshCollections'>Обновить</a>
-                <button type='button' class='btn btn-primary right loadContragents'>Загрузить контрагентов СибГУФК</button>&nbsp;
+                <button type='button' class='btn btn-primary right' data-toggle='modal' data-target='#uploadContragentsDialog'>Загрузить контрагентов СибГУФК</button>&nbsp;
                 <button type='button' class='btn btn-primary right' data-toggle='modal' data-target='#downloadPaymentsDialog'>Выгрузить платежи СибГУФК</button>
                 <div class="resultArea">
                 </div>
@@ -102,6 +103,8 @@
     include 'include/editUserDialog.php';
     include 'include/changePasswordDialog.php';
     include 'include/downloadPaymentsDialog.php';
+    include 'include/uploadContragentsDialog.php';
+    include 'include/usersMessageDialog.php';
     ?>
 
     <!-- env:prod --#>
@@ -114,6 +117,9 @@
         <script src="../bower_components/moment/locale/ru.js"></script>
         <script src='../bower_components/bootstrap/dist/js/bootstrap.js'></script>
         <script src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <script src='../bower_components/bootstrap-fileinput/js/fileinput.min.js'></script>
+        <script src='../bower_components/bootstrap-fileinput/js/locales/ru.js'></script>
+
         <script src='views/js/admin.js?<?= filemtime(ROOT.'/views/js/admin.js')?>'></script>
     <!-- env:dev:end -->
 </body>

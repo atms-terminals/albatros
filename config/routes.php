@@ -21,6 +21,7 @@ return array(
     '.*?/admin/getCollections' => 'admin/getCollections',
     '.*?/admin/getCollectionDetails' => 'admin/getCollectionDetails',
     '.*?/admin/downloadPaymentsSibgufk' => 'admin/downloadPaymentsSibgufk',
+    '.*?/admin/uploadContragentsSibgufk' => 'admin/uploadContragentsSibgufk',
 
     '.*?/admin/getPriceGroup' => 'admin/getPriceGroup',
     '.*?/admin/setPriceGroupStatus' => 'admin/setPriceGroupStatus',

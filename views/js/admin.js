@@ -14,6 +14,38 @@ function get(action, $area, values) {
 $(document).ready(function() {
     'use strict';
 
+    var sid = $('#sid').val();  
+    
+    $('#uploadContragentsDialog').on('show.bs.modal', function() {
+        $('#uploadContragentsDialog button.kv-file-remove').trigger('click');
+    });
+
+    /////////////////////////////////////////////////////////////////////////////////
+    $('#fileinput')
+        .fileinput({
+            language: 'ru',
+            uploadUrl: sid + '/admin/uploadContragentsSibgufk',
+            // showPreview: false,
+            showUpload: false,
+            showCaption: false,
+            dropZoneEnabled: false,
+            maxFileCount: 1,
+            uploadAsync: false,
+        })
+        .on('filebatchuploadsuccess', function(e, response) {
+            $('#uploadContragentsDialog').modal('hide');
+            $('#usersMessageDialog .messageArea').html(response.response.message);
+            $('#usersMessageDialog').modal('show');
+        });
+
+    $('.upload-contragents').click(function() {
+        var filesCount = $('#fileinput').fileinput('getFilesCount');
+
+        if (filesCount > 0) {
+            $('#fileinput').fileinput('upload');
+        }
+    });
+
     /////////////////////////////////////////////////////////////////////////////////
     $('#date1').datetimepicker({
         format: 'DD.MM.YYYY',
