@@ -60,8 +60,10 @@ $(document).ready(function() {
     $(document).on('click', 'button.getCollectionDetails', function() {
         var sid = $('#sid').val(),
             idCollection = $(this).siblings('.id').val(),
+            type = $(this).siblings('.type').val(),
             req = {
-                idCollection: idCollection
+                idCollection: idCollection,
+                type: type
             };
 
         $.post(sid + '/admin/getCollectionDetails', req, function(response) {
