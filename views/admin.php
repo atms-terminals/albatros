@@ -9,11 +9,12 @@
     <title>СОК "Альбатрос". Панель администратора</title>
 
     <!-- env:prod --#>
-        <link rel="stylesheet" href="views/css/style.min.css?<?= filemtime("views/css/login.min.css")?>">
+        <link rel="stylesheet" href="views/css/style.min.css?<?= filemtime("views/css/style.min.css")?>">
     <!-- env:prod:end -->
 
     <!-- env:dev -->
         <link href='../bower_components/bootstrap/dist/css/bootstrap.css' rel="stylesheet">
+        <link href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
         <link href='views/css/style-sass.css?<?= filemtime(ROOT.'/views/css/style-sass.css')?>' rel="stylesheet">
     <!-- env:dev:end -->
 
@@ -38,17 +39,22 @@
 
 
         <div class="tab-content">
+
             <div role="tabpanel" id="collections" class="tab-pane fade">
                 <a class="btn btn-primary" id='refreshCollections'>Обновить</a>
+                <button type='button' class='btn btn-primary right loadContragents'>Загрузить контрагентов СибГУФК</button>&nbsp;
+                <button type='button' class='btn btn-primary right' data-toggle='modal' data-target='#downloadPaymentsDialog'>Выгрузить платежи СибГУФК</button>
                 <div class="resultArea">
                 </div>
             </div>
+
             <div role="tabpanel" id="hws" class="tab-pane fade in active">
                 <a class="btn btn-primary" id='refreshHwsStatus'>Обновить</a>
                 <div class="resultArea">
                     <?php require_once(ROOT.'/views/hwsState.php'); ?>
                 </div>
             </div>
+
             <div role="tabpanel" id="admin" class="tab-pane fade">
                 <h2>Терминалы</h2>
                 <button type='button' class='btn btn-primary changeUser add terminal' data-toggle='modal' data-target='#changeUserDialog'>Добавить</button>
@@ -63,11 +69,13 @@
                     </div>
                 </div>
             </div>
+
             <div role="tabpanel" id="prepaid" class="tab-pane fade">
                 <input type="text" class="col-sm-10 col-xs-12" placeholder="Введите номер карты или фамилию" id="searchStr">
                 <a class="btn btn-primary" id='getPrepaid'>Найти</a>
                 <div class="resultArea"></div>
             </div>
+
             <div role="tabpanel" id="priceGroup" class="tab-pane fade">
                 <fieldset>
                     <p>
@@ -93,6 +101,7 @@
     include 'include/prepaidDialog.php';
     include 'include/editUserDialog.php';
     include 'include/changePasswordDialog.php';
+    include 'include/downloadPaymentsDialog.php';
     ?>
 
     <!-- env:prod --#>
@@ -101,7 +110,10 @@
 
     <!-- env:dev -->
         <script src='../bower_components/jquery/dist/jquery.js'></script>
+        <script src="../bower_components/moment/min/moment-with-locales.min.js"></script>
+        <script src="../bower_components/moment/locale/ru.js"></script>
         <script src='../bower_components/bootstrap/dist/js/bootstrap.js'></script>
+        <script src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
         <script src='views/js/admin.js?<?= filemtime(ROOT.'/views/js/admin.js')?>'></script>
     <!-- env:dev:end -->
 </body>

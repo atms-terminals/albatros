@@ -14,6 +14,47 @@ function get(action, $area, values) {
 $(document).ready(function() {
     'use strict';
 
+    /////////////////////////////////////////////////////////////////////////////////
+    $('#date1').datetimepicker({
+        format: 'DD.MM.YYYY',
+        locale: 'ru'
+    });
+    $('#date2').datetimepicker({
+        useCurrent: false, //Important! See issue #1075
+        format: 'DD.MM.YYYY',
+        locale: 'ru'
+    });
+    $('#date1').on('dp.change', function (e) {
+        $('#date2').data('DateTimePicker').minDate(e.date);
+    });
+    $('#date2').on('dp.change', function (e) {
+        $('#date1').data('DateTimePicker').maxDate(e.date);
+    });
+
+    /////////////////////////////////////////////////////////////////////////////////
+    $('.download-payments').click(function() {
+        var sid = $('#sid').val(),
+            req = {
+                dt1: $('#date1 input').val(),
+                dt2: $('#date2 input').val()
+            };
+
+        $.post(sid + '/admin/downloadPaymentsSibgufk', req, function(response) {
+            var $a = $('<a>');
+            $a.attr('href', response.file);
+            $('body').append($a);
+            $a.attr('download', 'payments.xls');
+            $a[0].click();
+            $a.remove();
+
+            $('#downloadPaymentsDialog').modal('hide');
+        }, 'json')
+            .fail(function(){
+            });
+        
+    });
+
+    /////////////////////////////////////////////////////////////////////////
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         switch (e.target.hash) {
             case '#hws': 

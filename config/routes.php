@@ -20,6 +20,7 @@ return array(
     '.*?/admin/getHwsState' => 'admin/getHwsState',
     '.*?/admin/getCollections' => 'admin/getCollections',
     '.*?/admin/getCollectionDetails' => 'admin/getCollectionDetails',
+    '.*?/admin/downloadPaymentsSibgufk' => 'admin/downloadPaymentsSibgufk',
 
     '.*?/admin/getPriceGroup' => 'admin/getPriceGroup',
     '.*?/admin/setPriceGroupStatus' => 'admin/setPriceGroupStatus',

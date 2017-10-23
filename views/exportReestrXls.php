@@ -28,7 +28,7 @@ function writeXls($data, $fn)
         'fill' => array(
             'type' => PHPExcel_Style_Fill::FILL_SOLID,
             'color' => array(
-                'rgb' => 'FFFEFEFE'
+                'rgb' => 'CCCCCC'
             )
         ),
         'font' => array(
@@ -62,68 +62,95 @@ function writeXls($data, $fn)
     // Set active sheet index to the first sheet, so Excel opens this as the first sheet
     $objPHPExcel->setActiveSheetIndex(0);
 
-    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    // $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 
-    $objWriter->save(ROOT."/download/$fn");
+    // $objWriter->save(ROOT."/download/$fn");
+    return $objPHPExcel;
 }
 
-function getPayments()
+// function getPayments()
+// {
+//     $query = "/*".__FILE__.':'.__LINE__."*/ ".
+//         "UPDATE payments_sibgufk p
+//         set p.sent = -1
+//         where p.sent = 0";
+//     $result = dbHelper\DbHelper::call($query);
+
+//     $query = "/*".__FILE__.':'.__LINE__."*/ ".
+//         "SELECT p.id, date_format(p.dt_insert, '%d.%m.%Y %H:%i:%s') dt, p.id_contragent, p.contragent, p.passport, p.amount
+//         from payments_sibgufk p
+//         where p.sent = -1";
+//     $data = dbHelper\DbHelper::selectSet($query);
+
+//     $query = "/*".__FILE__.':'.__LINE__."*/ ".
+//         "UPDATE payments_sibgufk p
+//         set p.sent = 1
+//         where p.sent = -1";
+//     // $result = dbHelper\DbHelper::call($query);
+//     return $data;
+// }
+
+function getPaymentsInterval($dt1, $dt2)
 {
     $query = "/*".__FILE__.':'.__LINE__."*/ ".
-        "UPDATE payments_sibgufk p
-        set p.sent = -1
-        where p.sent = 0";
-    $result = dbHelper\DbHelper::call($query);
-
-    $query = "/*".__FILE__.':'.__LINE__."*/ ".
-        "SELECT date_format(p.dt_insert, '%d.%m.%Y %H:%i:%s') dt, p.id_contragent, p.contragent, p.passport, p.amount
+        "SELECT p.id, date_format(p.dt_insert, '%d.%m.%Y %H:%i:%s') dt, p.id_contragent, p.contragent, p.passport, p.amount
         from payments_sibgufk p
-        where p.sent = -1";
+        where p.dt_insert > $dt1
+            and p.dt_insert < $dt2
+            ";
     $data = dbHelper\DbHelper::selectSet($query);
-
-    $query = "/*".__FILE__.':'.__LINE__."*/ ".
-        "UPDATE payments_sibgufk p
-        set p.sent = 1
-        where p.sent = -1";
-    // $result = dbHelper\DbHelper::call($query);
     return $data;
 }
 
-function getContragents()
-{
-    $query = "/*".__FILE__.':'.__LINE__."*/ ".
-        "SELECT c.id, c.id_contragent, c.fio, c.passport
-        from custom_contragents_sgufk c
-        where c.is_term = 1";
-    $data = dbHelper\DbHelper::selectSet($query);
+// function getContragents()
+// {
+//     $query = "/*".__FILE__.':'.__LINE__."*/ ".
+//         "SELECT c.id, c.id_contragent, c.fio, c.passport
+//         from custom_contragents_sgufk c
+//         where c.is_term = 1";
+//     $data = dbHelper\DbHelper::selectSet($query);
 
-    $query = "/*".__FILE__.':'.__LINE__."*/ ".
-        "UPDATE custom_contragents_sgufk c
-        set c.is_term = 0
-        where c.is_term = 1";
-    // $result = dbHelper\DbHelper::call($query);
-    return $data;
-}
+//     $query = "/*".__FILE__.':'.__LINE__."*/ ".
+//         "UPDATE custom_contragents_sgufk c
+//         set c.is_term = 0
+//         where c.is_term = 1";
+//     // $result = dbHelper\DbHelper::call($query);
+//     return $data;
+// }
 
 $data = array(
-    'contragents' => array(
-        'header' => array(
-            'id_contragent' => 'id',
-            'fio' => 'контрагент',
-            'passport' => 'паспорт',
-        ),
-        'data' => getContragents()
-    ),
+    // 'contragents' => array(
+    //     'header' => array(
+    //         'id_contragent' => 'id',
+    //         'fio' => 'контрагент',
+    //         'passport' => 'паспорт',
+    //     ),
+    //     'data' => getContragents()
+    // ),
     'payments' => array(
         'header' => array(
+            'id' => 'id платежа',
             'dt' => 'дата платежа',
             'id_contragent' => 'id',
             'contragent' => 'контрагент',
             'passport' => 'паспорт',
             'amount' => 'сумма',
         ),
-        'data' => getPayments(),
+        'data' => getPaymentsInterval($dt1, $dt2),
     )
 );
-writeXls($data['contragents'], 'changedContragents.xls');
-writeXls($data['payments'], 'payments.xls');
+// writeXls($data['contragents'], 'changedContragents.xls');
+$xls = writeXls($data['payments'], 'payments.xls');
+
+// Save Excel 2007 file
+$objWriter = PHPExcel_IOFactory::createWriter($xls, 'Excel2007');
+
+ob_start();
+$objWriter->save('php://output');
+$xlsData = ob_get_contents();
+ob_end_clean();
+
+$response['code'] = 0;
+$response['file'] = "data:application/vnd.ms-excel;base64,".base64_encode($xlsData);
+
+echo json_encode($response);

@@ -31,6 +31,15 @@ class AdminController
         return true;
     }
 
+    public function actionDownloadPaymentsSibgufk()
+    {
+        $dt1 = empty($_POST['dt1']) ? 'now()' : "str_to_date('".dbHelper\DbHelper::mysqlStr($_POST['dt1'])."', '%d.%m.%Y')";
+        $dt2 = empty($_POST['dt2']) ? 'now() + interval 1 day' : "str_to_date('".dbHelper\DbHelper::mysqlStr($_POST['dt2'])."', '%d.%m.%Y')";
+        
+        require_once(ROOT.'/views/exportReestrXls.php');
+        return true;
+    }
+
     public function actionGetCollectionDetails()
     {
         $idCollection = empty($_POST['idCollection']) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['idCollection']);
