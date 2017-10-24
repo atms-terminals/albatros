@@ -49,7 +49,6 @@ class AdminController
             } else {
                 $response['message'] = 'Ошибка загрузки файла';
             }
-
         } else {
             $response['message'] = 'Нет файла';
         }

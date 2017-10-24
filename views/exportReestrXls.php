@@ -154,3 +154,4 @@ $response['code'] = 0;
 $response['file'] = "data:application/vnd.ms-excel;base64,".base64_encode($xlsData);
 
 echo json_encode($response);
+?>

@@ -63,8 +63,22 @@ module.exports = function(grunt) {
             },
             build: {
                 files: {
-                    'tmp/terminal.js': ['tmp/bower.js', 'views/js/terminal.js', 'views/js/cashcode.js', 'views/js/rfid.js'],
-                    'tmp/admin.js': ['tmp/bower.js', 'views/js/admin.js'],
+                    'tmp/terminal.js': [
+                        'bower_components/jquery/dist/jquery.js', 
+                        'bower_components/bootstrap/dist/js/bootstrap.js', 
+                        'views/js/terminal.js', 
+                        'views/js/cashcode.js', 
+                        'views/js/rfid.js'
+                        ],
+                    'tmp/admin.js': [
+                        'bower_components/jquery/dist/jquery.js', 
+                        'bower_components/bootstrap/dist/js/bootstrap.js', 
+                        'bower_components/moment/moment.js',
+                        'bower_components/moment/locale/ru.js',
+                        'bower_components/bootstrap-fileinput/js/fileinput.js',
+                        'bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
+                        'views/js/admin.js'
+                        ],
                 },
             }
         },
@@ -118,6 +132,8 @@ module.exports = function(grunt) {
                     ],
                     'release/views/css/style.min.css' : [
                         'bower_components/bootstrap/dist/css/bootstrap.css',
+                        'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+                        'bower_components/bootstrap-fileinput/css/fileinput.min.css',
                         'views/css/style*.css',
                     ]
                 }
