@@ -217,12 +217,12 @@
     <s22>
         <desc>Терминал. Платеж</desc>
         <screen>22</screen>
-<!--         <print>
-            <top>6</top>
-            <elements>11</elements>
-            <bottom>10</bottom>
+        <print>
+            <top>23</top>
+            <elements>24</elements>
+            <bottom>25</bottom>
         </print>
- -->        <timer>
+        <timer>
             <screen>1</screen>
             <timeout>5</timeout>
             <action>move</action>

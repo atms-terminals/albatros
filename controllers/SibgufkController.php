@@ -24,17 +24,27 @@ class SibgufkController extends ajaxController\AjaxController
      */
     public function actionPay()
     {
-        $idContragent = empty($_POST['values']['idContragent']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['idContragent']);
+        $id = empty($_POST['values']['id']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['id']);
+        $idService = empty($_POST['values']['idService']) ? '0' : dbHelper\DbHelper::mysqlStr($_POST['values']['idService']);
         $amount = (empty($_POST['values']['amount'])) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['values']['amount']);
         $nextScreen = empty($_POST['nextScreen']) ? user\User::getFirstScreen() : dbHelper\DbHelper::mysqlStr($_POST['nextScreen']);
         $uid = user\User::getId();
 
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "CALL payments_add_sibgufk($uid, '$idContragent', '$amount')";
+            "CALL payments_add_sibgufk($uid, '$id', '$idService', '$amount')";
         $row = dbHelper\DbHelper::call($query);
 
         $replArray = $this->makeReplaceArray($nextScreen);
         $this->putPostIntoReplaceArray($replArray);
+
+        $query = "/*".__FILE__.':'.__LINE__."*/ ".
+            "SELECT s.`desc`
+            from custom_price_sibgufk s
+            where s.id = '$idService'";
+        $row = dbHelper\DbHelper::selectRow($query);
+        $replArray['patterns'][] = '{SERVICE_NAME}';
+        $replArray['values'][] = empty($row['desc']) ? "Прочие услуги" : $row['desc'];
+
         $response = $this->getScreen($nextScreen, $replArray);
         $response['message'] = '';
         $response['code'] = 0;
@@ -52,13 +62,14 @@ class SibgufkController extends ajaxController\AjaxController
     {
         $contragent = empty($_POST['values']['contragent']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['contragent']);
         $idContragent = empty($_POST['values']['idContragent']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['idContragent']);
+        $id = empty($_POST['values']['id']) ? '0' : dbHelper\DbHelper::mysqlStr($_POST['values']['id']);
         $passport = empty($_POST['values']['passport']) ? '' : dbHelper\DbHelper::mysqlStr($_POST['values']['passport']);
 
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "SELECT custom_contragents_add_term(1, 'subgufk', '$idContragent', '$contragent', '$passport') res";
+            "SELECT custom_contragents_add_term(1, 'subgufk', '$id', '$idContragent', '$contragent', '$passport') res";
         $row = dbHelper\DbHelper::selectRow($query);
 
-        $_POST['values']['idContragent'] = $row['res'];
+        $_POST['values']['id'] = $row['res'];
         
         $nextScreen = $row['res'] == 0 ? FIRST_SCREEN : GET_MONEY_SCREEN_SIBGUFK;
 
@@ -77,7 +88,7 @@ class SibgufkController extends ajaxController\AjaxController
     /**
      * Обработка команды получения списка контрагентов
      */
-    public function actiongetContragents()
+    public function actionGetContragents()
     {
         $nextScreen = empty($_POST['nextScreen']) ? user\User::getFirstScreen() : dbHelper\DbHelper::mysqlStr($_POST['nextScreen']);
 
@@ -86,14 +97,15 @@ class SibgufkController extends ajaxController\AjaxController
         $contragent = implode('%', $contragentsParts);
         
         $replArray = $this->makeReplaceArray($nextScreen);
+        $this->putPostIntoReplaceArray($replArray);
 
         $contList = '';
 
         if (strlen($contragentSrc) > 5) {
             // добавляем список контрагентов
             $query = "/*".__FILE__.':'.__LINE__."*/ ".
-                "SELECT c.id, c.fio, c.passport
-                from custom_contragents_sgufk c
+                "SELECT c.id, c.fio, c.passport, id_contragent
+                from custom_contragents_sibgufk c
                 where upper(c.fio) like upper('$contragent%')
                 order by c.fio";
             $rows = dbHelper\DbHelper::selectSet($query);
@@ -107,9 +119,11 @@ class SibgufkController extends ajaxController\AjaxController
                             <td class='text-center'>
                                 <input class='nextScreen' type='hidden' value='$next' />
                                 <input class='activity' type='hidden' value='move' />
-                                <input class='value idContragent' type='hidden' value='{$onePiece['id']}' />
+                                <input class='value id' type='hidden' value='{$onePiece['id']}' />
+                                <input class='value idContragent' type='hidden' value='{$onePiece['id_contragent']}' />
                                 <input class='value contragent' type='hidden' value='{$onePiece['fio']}' />
                                 <input class='value passport' type='hidden' value='{$onePiece['passport']}' />
+                                <input class='value idService' type='hidden' value='{$_POST['values']['idService']}' />
                                 <a class='btn btn-primary action small'>Выбрать</a>
                             </td>
                         </tr>";
@@ -191,10 +205,18 @@ class SibgufkController extends ajaxController\AjaxController
             ORDER BY p.id_parent, p.color, p.`desc`";
         $rows = dbHelper\DbHelper::selectSet($query);
         $buttons = '';
-
         for ($i = $start; $i < $start + BUTTON_PER_SCREEN && $i < count($rows); $i++) {
+            // проверяем, есть ли потомки
+            $query = "/*".__FILE__.':'.__LINE__."*/ ".
+                "SELECT count(*) cnt
+                FROM v_clients_custom_pricelist p
+                WHERE p.id_parent = '{$rows[$i]['id']}'
+                    and p.type = 'sibgufk'
+                ORDER BY p.id_parent, p.color, p.`desc`";
+            $counts = dbHelper\DbHelper::selectSet($query);
             $cost = $rows[$i]['price'] && $rows[$i]['price'] != '0.00' ? "<hr>{$rows[$i]['price']} руб." : '';
-            if ($cost) {
+
+            if ($counts[0]['cnt'] == 0) {
                 $minPurchase = $rows[$i]['price'] * $rows[$i]['price_min_unit'];
                 $buttons .= "<span>
                         <!--input class='activity' type='hidden' value='move' />
@@ -202,7 +224,7 @@ class SibgufkController extends ajaxController\AjaxController
                         <button class='btn btn-{$rows[$i]['color']} action service'>{$rows[$i]['desc']}$cost</button-->   
 
                         <input class='nextScreen' type='hidden' value='".CONTRAGENTS_SIBGUFK."' />
-                        <input class='value id' type='hidden' value='{$rows[$i]['id']}' />
+                        <input class='value idService' type='hidden' value='{$rows[$i]['id']}' />
                         <input class='activity' type='hidden' value='move' />
                         <button class='btn btn-{$rows[$i]['color']} action service'>{$rows[$i]['desc']}$cost</button>   
                     </span>";
@@ -215,7 +237,6 @@ class SibgufkController extends ajaxController\AjaxController
                     </span>";
             }
         }
-
         $controls .= "<div class='controlDiv'>";
         if ($start + BUTTON_PER_SCREEN < count($rows)) {
             $start += BUTTON_PER_SCREEN;
