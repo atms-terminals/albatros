@@ -69,17 +69,26 @@ class AdminController
             where co.id = '$idCollection'";
         $collectionParams = dbHelper\DbHelper::selectSet($query);
 
-        $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "SELECT date_format(p.dt_confirm, '%d.%m.%Y %H:%i') dt_oper, a.name `client`, a.card, c.`desc` service, p.amount, p.deposit, p.summ
-            from v_payments p
-                left join custom_price_albatros c on p.abonement = c.id
-                left join cards a on p.id_card = a.id
-            where p.id_collection = '$idCollection'
-                and p.type = '$type'
-            order by p.dt_confirm";
-        $opers = dbHelper\DbHelper::selectSet($query);
-
-        require_once(ROOT.'/views/collectionDetailsXls.php');
+        if ($type == 'albatros') {
+            $query = "/*".__FILE__.':'.__LINE__."*/ ".
+                "SELECT date_format(p.dt_confirm, '%d.%m.%Y %H:%i') dt_oper, a.name `client`, a.card, c.`desc` service, p.amount, p.deposit, p.summ
+                from v_payments p
+                    left join custom_price_albatros c on p.abonement = c.id
+                    left join cards a on p.id_card = a.id
+                where p.id_collection = '$idCollection'
+                    and p.type = '$type'
+                order by p.dt_confirm";
+            $opers = dbHelper\DbHelper::selectSet($query);
+            require_once(ROOT.'/views/collectionDetailsXlsAlbatros.php');
+        } else {
+            $query = "/*".__FILE__.':'.__LINE__."*/ ".
+                "SELECT date_format(p.dt_insert, '%d.%m.%Y %H:%i') dt_oper, p.id_contragent, p.contragent, p.passport, p.service, p.amount
+                from v_payments_sibgufk p
+                where p.id_collection = '$idCollection'
+                order by p.dt_insert";
+            $opers = dbHelper\DbHelper::selectSet($query);
+            require_once(ROOT.'/views/collectionDetailsXlsSibgufk.php');
+        }
         return true;
     }
 

@@ -103,7 +103,7 @@ $response['message'] = "Неверный формат";
 if ($rowData[0][0] == 'Код' && $rowData[0][1] == 'ФИО') {
     if ($rowData) {
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "DELETE from custom_contragents_sgufk where 1;";
+            "DELETE from custom_contragents_sibgufk where 1;";
         $result = dbHelper\DbHelper::call($query);
 
         $k = loadContragents($rowData);

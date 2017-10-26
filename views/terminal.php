@@ -8,7 +8,7 @@
     <title>СОК "Альбатрос"</title>
 
     <!-- env:prod --#>
-        <link rel="stylesheet" href="views/css/style.min.css?<?= filemtime("views/css/login.min.css")?>">
+        <link rel="stylesheet" href="views/css/style.min.css?<?= filemtime("views/css/style.min.css")?>">
     <!-- env:prod:end -->
 
     <!-- env:dev -->

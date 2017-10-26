@@ -68,7 +68,8 @@ module.exports = function(grunt) {
                         'bower_components/bootstrap/dist/js/bootstrap.js', 
                         'views/js/terminal.js', 
                         'views/js/cashcode.js', 
-                        'views/js/rfid.js'
+                        'views/js/rfid.js',
+                        'views/kbd/kbd.js'
                         ],
                     'tmp/admin.js': [
                         'bower_components/jquery/dist/jquery.js', 
@@ -135,6 +136,7 @@ module.exports = function(grunt) {
                         'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
                         'bower_components/bootstrap-fileinput/css/fileinput.min.css',
                         'views/css/style*.css',
+                        'views/css/flex*.css',
                     ]
                 }
             }
@@ -210,6 +212,7 @@ module.exports = function(grunt) {
                 files: [
                 {expand: true, flatten: true, src: ['views/img/*'], dest: 'release/views/img/', filter: 'isFile'},
                 {expand: true, flatten: true, src: ['views/include/*'], dest: 'release/views/include/', filter: 'isFile'},
+                {expand: true, flatten: true, src: ['views/kbd/*.php'], dest: 'release/views/kbd/', filter: 'isFile'},
                 {expand: true, flatten: true, src: ['bower_components/bootstrap/fonts/*'], dest: 'release/views/fonts/', filter: 'isFile'},
                 {expand: true, src: ['components/PHPExcel/Classes/**'], dest: 'release/', filter: 'isFile'},
                 {expand: true, flatten: true, src: ['components/*'], dest: 'release/components/', filter: 'isFile'},

@@ -203,10 +203,10 @@
     <s21>
         <desc>Терминал. Прием денег</desc>
         <check>
-            <hw>0</hw>
+            <hw>1</hw>
         </check>
         <screen>21</screen>
-        <cash>0</cash>
+        <cash>1</cash>
         <timer>
             <screen>5</screen>
             <timeout>300</timeout>

@@ -30,6 +30,13 @@ class SibgufkController extends ajaxController\AjaxController
         $nextScreen = empty($_POST['nextScreen']) ? user\User::getFirstScreen() : dbHelper\DbHelper::mysqlStr($_POST['nextScreen']);
         $uid = user\User::getId();
 
+        if (!$amount) {
+            // уходим на первый экран
+            $_POST['nextScreen'] = user\User::getFirstScreen();
+            $this->actionMove();
+            exit();
+        }
+
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
             "CALL payments_add_sibgufk($uid, '$id', '$idService', '$amount')";
         $row = dbHelper\DbHelper::call($query);

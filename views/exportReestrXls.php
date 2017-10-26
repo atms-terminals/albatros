@@ -106,12 +106,12 @@ function getPaymentsInterval($dt1, $dt2)
 // {
 //     $query = "/*".__FILE__.':'.__LINE__."*/ ".
 //         "SELECT c.id, c.id_contragent, c.fio, c.passport
-//         from custom_contragents_sgufk c
+//         from custom_contragents_sibgufk c
 //         where c.is_term = 1";
 //     $data = dbHelper\DbHelper::selectSet($query);
 
 //     $query = "/*".__FILE__.':'.__LINE__."*/ ".
-//         "UPDATE custom_contragents_sgufk c
+//         "UPDATE custom_contragents_sibgufk c
 //         set c.is_term = 0
 //         where c.is_term = 1";
 //     // $result = dbHelper\DbHelper::call($query);
