@@ -15,7 +15,6 @@ return array(
     '.*?/ajax/getMoneyScreen' => 'albatros/getMoneyScreen',
     '.*?/ajax/pay' => 'albatros/pay',
     '.*?/ajax/getServiceList' => 'albatros/getServiceList',
-    
 
     '.*?/admin/getHwsState' => 'admin/getHwsState',
     '.*?/admin/getCollections' => 'admin/getCollections',
@@ -28,6 +27,7 @@ return array(
     '.*?/admin/setClientsDesc' => 'admin/setClientsDesc',
     '.*?/admin/setColor' => 'admin/setColor',
     '.*?/admin/setPrice' => 'admin/setPrice',
+    '.*?/admin/setNds' => 'admin/setNds',
     '.*?/admin/deletePriceItem' => 'admin/deletePriceItem',
     '.*?/admin/loadPriceList' => 'admin/loadPriceList',
 

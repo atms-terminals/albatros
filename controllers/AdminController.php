@@ -237,6 +237,22 @@ class AdminController
         return true;
     }
 
+    public function actionSetNds()
+    {
+        $uid = user\User::getId();
+        $id = empty($_POST['id']) ? 0 : dbHelper\DbHelper::mysqlStr($_POST['id']);
+        $nds = empty($_POST['nds']) ? 0 : (int)dbHelper\DbHelper::mysqlStr($_POST['nds']);
+        $type = empty($_POST['type']) ? 'albatros' : dbHelper\DbHelper::mysqlStr($_POST['type']);
+
+        $query = "/*".__FILE__.':'.__LINE__."*/ ".
+            "SELECT custom_price_set_nds($uid, '$type', '$id', $nds)";
+        $result = dbHelper\DbHelper::selectRow($query);
+        $response['code'] = 0;
+
+        echo json_encode($response);
+        return true;
+    }
+
     public function actionChangeStatus()
     {
         $uid = user\User::getId();

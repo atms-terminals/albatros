@@ -216,6 +216,24 @@ $(document).ready(function() {
             });
     });
 
+    // редактирование ндс для услуги для терминала
+    $(document).on('change', '.nds', function() {
+        var sid = $('#sid').val(),
+            $checkbox = $(this).siblings('.serviceItem'),
+            req = {
+                id: $checkbox.attr('id'), 
+                type: $('.day-type .active').val(),
+                nds: $(this).val()
+            };
+
+        $.post(sid + '/admin/setNds', req, function() {
+
+        }, 'json')
+            .fail(function(){
+                get('getPriceGroup', $('#priceGroup'));
+            });
+    });
+
     // редактирование цвета кнопки
     $(document).on('change', '.color input', function() {
         var sid = $('#sid').val(),
