@@ -45,12 +45,20 @@ class SibgufkController extends ajaxController\AjaxController
         $this->putPostIntoReplaceArray($replArray);
 
         $query = "/*".__FILE__.':'.__LINE__."*/ ".
-            "SELECT s.`desc`
+            "SELECT s.`desc`, s.nds
             from custom_price_sibgufk s
             where s.id = '$idService'";
         $row = dbHelper\DbHelper::selectRow($query);
         $replArray['patterns'][] = '{SERVICE_NAME}';
         $replArray['values'][] = empty($row['desc']) ? "Прочие услуги" : $row['desc'];
+
+        $replArray['patterns'][] = '{NDS}';
+        if ($row['nds'] == 1) {
+            $nds = number_format($amount / 118 * 18, 2, '.', ' ');
+            $replArray['values'][] = "В том числе НДС 18% $nds";
+        } else {
+            $replArray['values'][] = 'Без НДС';
+        }
 
         $response = $this->getScreen($nextScreen, $replArray);
         $response['message'] = '';
