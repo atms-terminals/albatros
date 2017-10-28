@@ -93,7 +93,7 @@ function writeXls($data, $fn)
 function getPaymentsInterval($dt1, $dt2)
 {
     $query = "/*".__FILE__.':'.__LINE__."*/ ".
-        "SELECT p.id, date_format(p.dt_insert, '%d.%m.%Y %H:%i:%s') dt, p.id_contragent, p.contragent, p.passport, p.amount
+        "SELECT p.id, date_format(p.dt_insert, '%d.%m.%Y %H:%i:%s') dt, p.id_contragent, p.contragent, p.passport, p.amount, p.id_service
         from payments_sibgufk p
         where p.dt_insert > $dt1
             and p.dt_insert < $dt2
@@ -132,6 +132,7 @@ $data = array(
             'id' => 'id платежа',
             'dt' => 'дата платежа',
             'id_contragent' => 'id',
+            'id_service' => 'id услуги',
             'contragent' => 'контрагент',
             'passport' => 'паспорт',
             'amount' => 'сумма',
