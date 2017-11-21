@@ -40,7 +40,7 @@
         <desc>Терминал. Выбор услуги</desc>
         <screen>3</screen>
         <check>
-            <hw>1</hw>
+            <hw>0</hw>
             <proffit>1</proffit>
         </check>
         <timer>

@@ -20,8 +20,8 @@ function getMenuLevel($menu, $id)
 
             $dropDown = (!empty($menu[$item['id']])) ? "<button class='dropdown'><span class='glyphicon glyphicon-triangle-top' aria-hidden='true'></span></button>" : '';
 
-            $checkedWoNds = $item['nds'] == '0' ? 'selected' : '';
-            $checkedWithllNds = $item['nds'] == '1' ? 'selected' : '';
+            $checkedWoNds = $item['nds'] == '4000' ? 'selected' : '';
+            $checkedWithllNds = $item['nds'] == '1000' ? 'selected' : '';
 
             $html .= "<li>$dropDown<input class='serviceItem id' type='checkbox' id='{$item['id']}' $status title='запретить/разрешить'>
                 {$item['desc']} (id={$item['id']}) 
@@ -36,8 +36,8 @@ function getMenuLevel($menu, $id)
                 $disabled = $item['type'] == 'sibgufk' ? '' : 'disabled';
                 $html .= "<input type='text' value='{$item['price']}' class='price' size='8' placeholder='Цена услуги' title='Цена услуги' />
                 <select class='nds'>
-                    <option value='0' $checkedWoNds>Без НДС</option>
-                    <option value='1' $checkedWithllNds>18%</option>
+                    <option value='4000' $checkedWoNds>Без НДС</option>
+                    <option value='1000' $checkedWithllNds>18%</option>
                 </select>";
             } else {
                 $html .= "<ul class='hidden'>";

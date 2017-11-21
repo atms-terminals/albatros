@@ -53,14 +53,18 @@ class SibgufkController extends ajaxController\AjaxController
         $replArray['values'][] = empty($row['desc']) ? "Прочие услуги" : $row['desc'];
 
         $replArray['patterns'][] = '{NDS}';
-        if ($row['nds'] == 1) {
-            $nds = number_format($amount / 118 * 18, 2, '.', ' ');
-            $replArray['values'][] = "В том числе НДС 18% $nds";
-        } else {
-            $replArray['values'][] = 'Без НДС';
-        }
+        $replArray['values'][] = $row['nds'];
+        // if ($row['nds'] == 1) {
+        //     $nds = number_format($amount / 118 * 18, 2, '.', ' ');
+        //     $replArray['values'][] = "В том числе НДС 18 $nds";
+        // } else {
+        //     $replArray['values'][] = 'Без НДС';
+        // }
 
         $response = $this->getScreen($nextScreen, $replArray);
+
+        $response['printForm']['amount'] = $amount;
+
         $response['message'] = '';
         $response['code'] = 0;
 
