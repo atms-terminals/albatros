@@ -166,9 +166,9 @@ class AlbatrosController extends ajaxController\AjaxController
         $replArray['patterns'][] = '{PURCHASE_AMOUNT}';
         $replArray['values'][] = $purchaseAmount;
         $replArray['patterns'][] = '{PREPAYMENT}';
-        $replArray['values'][] = number_format($prepayment, 2, '.', ' ');
+        $replArray['values'][] = number_format($prepayment, 2, '.', '');
         $replArray['patterns'][] = '{MIN_SUMM}';
-        $replArray['values'][] = number_format($purchaseAmount - $prepayment, 2, '.', ' ');
+        $replArray['values'][] = number_format($purchaseAmount - $prepayment, 2, '.', '');
 
         $response = $this->getScreen($nextScreen, $replArray);
 
