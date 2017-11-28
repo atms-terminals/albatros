@@ -40,6 +40,16 @@ function frPrintZReport() {
 }
 
 /**
+ * Печать X-отчета
+ */
+function frPrintXReport() {
+    'use strict';
+    if (ws.readyState === ws.OPEN) {
+        ws.send('{"object": "fr", "cmd": "printxreport"}');
+    }
+}
+
+/**
  * обработчик событий купюрника
  */
 function handleCashmachineEvent(eventType, eventValue) {
@@ -205,21 +215,46 @@ function DispatcherWebSocket() {
  * 
  * Полный функционал по созданию фискального чека
  *
- * Позиции задаются списком "название";"цена";"количество";, разделенных между собой символом '|'
- * Пример: товар 1;100;2;|товар2;300;1;
+ * Позиции задаются списком "название";"цена";"количество";"налог";, разделенных между собой символом '|'
+ * Пример: товар 1;100;2;3000;|товар2;300;1;3000;
  * 
- * Комментарии печатаются до позиций и после, разделитель в комментариях - конец строки \n
+ * Комментарии печатаются до позиций и после, разделитель в комментариях - конец строки '\n'
+ * 
+ * Налог передается одним словом состоящим из 4-х цифр от 0 до 4 («0» – нет, «1»...«4» – налоговая группа)
+ * 1 - НДС 18%, 2 - НДС 10%, 3 - НДС 0%, 4 - Без налога
+ *
+ * address - адрес (email/телефон) куда отправить копию чека
+ *
  */
-function frPrintCheck(positions, summ, comment1, comment2) {
+function frPrintCheck(positions, summ, comment1, comment2, tax, address) {
     'use strict';
     if (ws.readyState === ws.OPEN) {
         ws.send('{"object": "fr",' + 
             ' "cmd": "printcheck",' + 
             ' "text": "' + positions + '",' + 
             ' "summ": "' + summ + '",' +
+            ' "info": "' + tax + '",' +
+            ' "address": "' + address + '",' +
             ' "comment1": "' + encodeURIComponent(comment1) + '",' + 
             ' "comment2": "' + encodeURIComponent(comment2) + '"' + 
             '}');
+    }
+}
+
+
+/**
+* 
+* Печать не фискального чека
+*
+* Текст передается одной строкой, разделитель строк - символ конца строки '\\n'
+*/
+function frPrintTicket(comments) {
+    'use strict';
+    if (ws.readyState === ws.OPEN) {
+        ws.send('{"object": "fr", ' +
+            '"cmd": "printticket", ' +
+            '"text": "' + encodeURIComponent(comments) + '"' +
+        '}');
     }
 }
 

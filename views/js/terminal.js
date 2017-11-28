@@ -99,11 +99,12 @@ function doAction(activity, nextScreen, values){
             // если есть печатная форма - печатаем
             if (response.printForm !== undefined && response.printForm !== '') {
                 var elements = response.printForm.elements || ';;',
+                    tax = response.printForm.tax || '0000',
                     top = response.printForm.top || '',
                     bottom = response.printForm.bottom || '',
                     amount = response.printForm.amount || 0;
 
-                frPrintCheck(elements, amount, top, bottom);
+                frPrintCheck(elements, amount, top, bottom, tax, '');
             }
 
             // если есть таймер и нет аудио для автоматического перехода

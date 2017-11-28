@@ -163,6 +163,9 @@
     <s17>
         <desc>Ввод контрагента</desc>
         <screen>17</screen>
+        <check>
+            <hw>1</hw>
+        </check>
         <timer>
             <screen>1</screen>
             <timeout>60</timeout>
