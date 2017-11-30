@@ -61,6 +61,7 @@
         <timer>
             <screen>5</screen>
             <timeout>300</timeout>
+            <timeoutNoMoney>30</timeoutNoMoney>
             <action>pay</action>
         </timer>
     </s4>
@@ -213,6 +214,7 @@
         <timer>
             <screen>5</screen>
             <timeout>300</timeout>
+            <timeoutNoMoney>30</timeoutNoMoney>
             <action>pay</action>
         </timer>
     </s21>

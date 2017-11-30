@@ -180,9 +180,11 @@ class AjaxController
         if (!empty($xml->$idScreen->timer)) {
             $response['tScreen'] = (empty($xml->$idScreen->timer->screen)) ? 0 : (int) $xml->$idScreen->timer->screen;
             $response['tTimeout'] = (empty($xml->$idScreen->timer->timeout)) ? 0 : (int) $xml->$idScreen->timer->timeout;
+            $response['tTimeoutNoMoney'] = (empty($xml->$idScreen->timer->timeoutNoMoney)) ? 0 : (int) $xml->$idScreen->timer->timeoutNoMoney;
             $response['tAction'] = (empty($xml->$idScreen->timer->action)) ? 'move' : (string) $xml->$idScreen->timer->action;
             $timer['tScreen'] = $response['tScreen'];
             $timer['tTimeout'] = $response['tTimeout'];
+            $timer['tTimeoutNoMoney'] = $response['tTimeoutNoMoney'];
             $timer['tAction'] = $response['tAction'];
         }
 

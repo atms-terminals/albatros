@@ -1,5 +1,5 @@
 ﻿/*jshint unused:false*/
-/*global doAction*/
+/*global doAction, timerNoMoney*/
 var ws;
 // const DISPATCHER_URL = 'ws://192.168.3.216:8011'; 
 const DISPATCHER_URL = 'ws://localhost:8011'; 
@@ -62,6 +62,12 @@ function handleCashmachineEvent(eventType, eventValue) {
 
         $('.amount').val(currAmount);
         $('.amountScreen').html(currAmount);
+
+        // если деньги приняты - то останавливаем таймер, который отслеживает невненсение денег
+        if (currAmount) {
+            clearTimeout(timerNoMoney);
+            $('.btn.action.pay').removeClass('hidden');
+        }
 
         console.log('Купюроприемник: банкнота принята ' + eventValue);
         event = {
