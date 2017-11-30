@@ -38,7 +38,7 @@ class Admin
                 join v_payments p on p.id_collection = c.id
                 join users u on c.id_user = u.id
             group by u.address, p.`type`, p.id_collection, date_format(c.dt, '%d.%m.%Y %H:%i')
-            order by u.address";
+            order by u.address, c.dt";
         $collections = dbHelper\DbHelper::selectSet($query);
 
         // наличка
