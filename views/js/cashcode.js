@@ -69,6 +69,12 @@ function handleCashmachineEvent(eventType, eventValue) {
             $('.btn.action.pay').removeClass('hidden');
         }
 
+        // Проверяем минимальную сумму платежа, если достигнута, то оплачиваем автоматом
+        var minAmount = +$('.minamount').val() || 0;
+        if (minAmount && currAmount >= minAmount) {
+            $('.btn.action.pay').trigger('click');
+        }
+
         console.log('Купюроприемник: банкнота принята ' + eventValue);
         event = {
             type: 'cash',
