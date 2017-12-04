@@ -97,7 +97,7 @@ function getPaymentsInterval($dt1, $dt2)
         from payments_sibgufk p
         where p.dt_insert > $dt1
             and p.dt_insert < $dt2
-            ";
+        order by p.dt_insert";
     $data = dbHelper\DbHelper::selectSet($query);
     return $data;
 }
@@ -141,7 +141,7 @@ $data = array(
     )
 );
 // writeXls($data['contragents'], 'changedContragents.xls');
-$xls = writeXls($data['payments'], 'payments.xls');
+$xls = writeXls($data['payments'], 'payments.xlsx');
 
 // Save Excel 2007 file
 $objWriter = PHPExcel_IOFactory::createWriter($xls, 'Excel2007');
