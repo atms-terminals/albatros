@@ -32,13 +32,13 @@ class Admin
                     select c.dt, c.id_user
                     from collections c 
                     order by c.dt desc
-                    limit 5
+                    limit 100
                 ) t on c.dt = t.dt 
                     and c.id_user = t.id_user
                 join v_payments p on p.id_collection = c.id
                 join users u on c.id_user = u.id
             group by u.address, p.`type`, p.id_collection, date_format(c.dt, '%d.%m.%Y %H:%i')
-            order by u.address, c.dt";
+            order by u.address, c.dt desc";
         $collections = dbHelper\DbHelper::selectSet($query);
 
         // наличка

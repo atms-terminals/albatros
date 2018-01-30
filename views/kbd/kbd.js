@@ -59,16 +59,16 @@ $(document).ready(function() {
             min = +$(target).siblings('.min').val() || 0,
             max = +$(target).siblings('.max').val() || 0;
 
+        var clearStr = customerText.replaceAll('_', '');
         if ($(this).hasClass('backspace')) {
             $customerInput.val(deleteLastSym(customerText, mask));
         } else if ($(this).hasClass('ok')) {
             // проверяем минимальную длину
-            var clearStr = customerText.replaceAll('_', '');
             if (clearStr.length >= min) {
                 $(this).closest('.keyboard').siblings('.action').trigger('click');
             }
         } else {
-            if (max && customerText.length < max) {
+            if (max && clearStr.length < max) {
                 $customerInput.val(getMaskedString(customerText, mask, char));
             }
         }
