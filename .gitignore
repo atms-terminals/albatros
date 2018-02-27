@@ -16,6 +16,9 @@ release/**
 tmp/**
 download/**
 
+# config
+/config/dbParams.php
+
 # sass файлы
 .sass-cache/**
 views/css/*.css
